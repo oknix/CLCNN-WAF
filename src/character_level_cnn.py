@@ -12,7 +12,7 @@ class CharacterLevelCNN(nn.Module):
 
         dimension = int((input_length - 96) / 27 * n_conv_filters)
         self.fc1 = nn.Sequential(nn.Linear(dimension, n_fc_neurons), nn.Dropout(0.5))
-        self.fc2 = nn.Sequential.(nn.Linear(n_fc_neurons, n_fc_neurons), nn.Dropout(0.5))
+        self.fc2 = nn.Sequential(nn.Linear(n_fc_neurons, n_fc_neurons), nn.Dropout(0.5))
         self.fc3 = nn.Linear(n_fc_neurons, n_classes)
 
         if n_conv_filters == 256 and n_fc_neurons == 1024:
@@ -45,3 +45,58 @@ class CharacterLevelCNN(nn.Module):
         output = self.fc3(output)
 
         return output
+
+class CLCNN_A(nn.Module):
+    def __init__(self, n_classes=2, input_length=1000, input_dim=128, n_conv_filters=64, n_fc_neurons=64):
+        super(CLCNN_A, self).__init__()
+        self.embeddings = nn.Embedding(input_length, input_dim)
+
+        self.conv1 = nn.Sequential(
+                nn.Conv1d(input_dim, n_conv_filters, kernel_size=7, padding=0), 
+                nn.ReLU(), 
+                nn.MaxPool1d(kernel_size=3, stride=3)
+                )
+
+        self.conv2 = nn.Sequential(
+                nn.Conv1d(n_conv_filters, n_conv_filters, kernel_size=7, padding=0), 
+                nn.ReLU(), 
+                nn.MaxPool1d(kernel_size=3, stride=3)
+                )
+        
+
+        self.fc1 = nn.Sequential(
+                nn.Linear(n_fc_neurons, n_fc_neurons),
+                nn.BatchNorm1d(num_features=64),
+                nn.Dropout(0.5)
+                )
+
+        self.fc2 = nn.Linear(n_fc_neurons, n_classes)
+
+        self.sig = nn.Sigmoid()
+
+        if n_conv_filters == 64 and n_fc_neurons == 64:
+            self._create_weights(mean=0.0, std=0.05)
+
+    def _create_weights(self, mean=0.0, std=0.05):
+        for module in self.modules():
+            if isinstance(module, nn.Conv1d) or isinstance(module, nn.Linear):
+                module.weight.data.normal_(mean, std)
+
+    def forward(self, input):
+        input = input.transpose(1, 2)
+        output = self.conv1(input)
+        output = self.conv2(output)
+
+        output = output.view(output.size(0), -1)
+        output = self.fc1(output)
+        output = self.fc2(output)
+        output = self.sig(output)
+
+        return output
+
+net = CLCNN_A()
+print(net)
+params = list(net.parameters())
+print(len(params))
+for i in range(len(params)):
+    print(params[i].size())
