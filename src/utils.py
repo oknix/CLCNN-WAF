@@ -2,15 +2,19 @@ import numpy as np
 from sklearn import metrics
 
 def get_evaluation(y_true, y_prob, list_metrics):
+    # 予測値を取り出す
     y_pred = np.argmax(y_prob, -1)
     output = {}
+    # accuracyの計算
     if 'accuracy' in list_metrics:
         output['accuracy'] = metrics.accuracy_score(y_true, y_pred)
+    # log lossの計算
     if 'loss' in list_metrics:
         try:
             output['loss'] = metrics.log_loss(y_true, y_prob)
         except ValueError:
             output['loss'] = -1
+    # confusion matrixの計算
     if 'confusion_matrix' in list_metrics:
         output['confusion_matrix'] = str(metrics.confusion_matrix(y_true, y_pred))
     return output
