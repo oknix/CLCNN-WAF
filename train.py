@@ -70,7 +70,7 @@ def train(opt):
         os.makedirs(opt.output)
     # あとで消す
     print(os.sep)
-    print(os.input)
+    print(opt.input)
     # outputファイルを作成
     output_file = open(opt.output + os.sep + "logs.txt", "w")
     output_file.write("Model's parameters: {}".format(vars(opt)))
