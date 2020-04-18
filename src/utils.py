@@ -16,6 +16,9 @@ def get_evaluation(y_true, y_prob, list_metrics):
     return output
 
 def get_default_folder(dataset, feature):
+    if dataset == "csic2010":
+        input = "input/csic2010_csv"
+        output = "output/csic2010_csv"
     if dataset == "agnews":
         input = "input/ag_news_csv"
         output = "output/ag_news"
