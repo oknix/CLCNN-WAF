@@ -2,12 +2,14 @@ import torch
 import torch.nn as nn
 import math
 
+# 2回目のmaxpoolにおけるkernel_sizeの値を計算
 def calc_maxpool2_input(l_in, kernel_size=7, stride=1, padding=0, dilation=1):
     x_conv1 = math.floor((l_in + 2*padding - dilation*(kernel_size - 1) - 1) / stride + 1)
     x_max1 = math.floor((x_conv1 + 2*padding - dilation*(kernel_size - 1) - 1) / stride + 1)
     x_conv2 = math.floor((x_max1 + 2*padding - dilation*(kernel_size - 1) - 1) / stride + 1)
     return x_conv2
 
+# CLCNN TypeA
 class CLCNN_A(nn.Module):
     def __init__(self, n_classes=1, input_length=1000, input_dim=128, n_conv_filters=64, n_fc_neurons=64, K=7):
         super(CLCNN_A, self).__init__()
@@ -51,6 +53,7 @@ class CLCNN_A(nn.Module):
 
         return output
 
+# originalのCharacterLevelCNN
 class CharacterLevelCNN(nn.Module):
     def __init__(self, n_classes=14, input_length=1014, input_dim=68, n_conv_filters=256, n_fc_neurons=1024):
         super(CharacterLevelCNN, self).__init__()
