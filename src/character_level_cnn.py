@@ -88,7 +88,7 @@ class CharacterLevelCNN(nn.Module):
         output = self.conv5(output)
         output = self.conv6(output)
 
-        output = output.view(-1, 64)
+        output = output.view(output.size(0), -1)
         output = self.fc1(output)
         output = self.fc2(output)
         output = self.fc3(output)
