@@ -68,9 +68,6 @@ def train(opt):
     # outputのディレクトリが存在していなかったらディレクトリを作成
     if not os.path.exists(opt.output):
         os.makedirs(opt.output)
-    # あとで消す
-    print(os.sep)
-    print(os.input)
     # outputファイルを作成
     output_file = open(opt.output + os.sep + "logs.txt", "w")
     output_file.write("Model's parameters: {}".format(vars(opt)))

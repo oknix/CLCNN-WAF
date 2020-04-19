@@ -2,7 +2,7 @@ import numpy as np
 import sys
 import csv
 from torch.utils.data import Dataset
-csv.fileld_size_limit(sys.maxsize)
+csv.field_size_limit(sys.maxsize)
 
 class MyDataset(Dataset):
     def __init__(self, data_path, max_length=1014):
