@@ -35,7 +35,7 @@ def get_args():
     parser.add_argument("-l", "--lr", type=float, default=0.001)  # recommended learning rate for sgd is 0.01, while for adam is 0.001
     # 学習させるデータセットの指定
     parser.add_argument("-d", "--dataset", type=str,
-                        choices=["agnews", "dbpedia", "yelp_review", "yelp_review_polarity", "amazon_review",
+                        choices=["csic2010", "agnews", "dbpedia", "yelp_review", "yelp_review_polarity", "amazon_review",
                                  "amazon_polarity", "sogou_news", "yahoo_answers"], default="yelp_review_polarity",
                         help="public dataset used for experiment. If this parameter is set, parameters input and output are ignored")
     # early stoppingさせるためのロスの閾値
@@ -62,7 +62,7 @@ def train(opt):
     else:
         torch.manual_seed(123)
     # データセットのパスを指定
-    if opt.dataset in ["agnews", "dbpedia", "yelp_review", "yelp_review_polarity", "amazon_review",
+    if opt.dataset in ["csic2010", "agnews", "dbpedia", "yelp_review", "yelp_review_polarity", "amazon_review",
                        "amazon_polarity", "sogou_news", "yahoo_answers"]:
         opt.input, opt.output = get_default_folder(opt.dataset, opt.feature)
     # outputのディレクトリが存在していなかったらディレクトリを作成

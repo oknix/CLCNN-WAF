@@ -10,12 +10,12 @@ def make_csv(filename, flag):
             line = f.readline()
             if line:
                 if line == '\n' and "Connection:" in before_line:
-                    data_list.append(["{0}".format(flag),"{0}".format(raw_text)])
+                    data_list.append(["{0}".format(flag),"{0}".format(raw_text.replace("\n", " "))])
                     raw_text = ""
                     before_line = line
                 elif ("GET" not in line) and ("POST" not in line) and ("PUT" not in line) and line != '\n' and before_line == '\n':
                     raw_text += line
-                    data_list.append(["{0}".format(flag),"{0}".format(raw_text)])
+                    data_list.append(["{0}".format(flag),"{0}".format(raw_text.replace("\n", " "))])
                     raw_text = ""
                     before_line = line
                 elif line == '\n' and before_line == '\n':
@@ -33,5 +33,6 @@ def make_csv(filename, flag):
         writer.writerows(data_list)
 
 if __name__ == "__main__":
-    make_csv("anomalousTrafficTest.txt", "1")
-    make_csv("normalTrafficTraining.txt", "0")
+    make_csv("anomalousTrafficTest.txt", "2")
+    make_csv("normalTrafficTraining.txt", "1")
+    make_csv("normalTrafficTest.txt", "1")
